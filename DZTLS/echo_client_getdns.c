@@ -72,6 +72,8 @@ struct DNS_info{
     } CertVerifyEntry;
 } dns_info;
 
+const static char *DNS_RESOLVER = "43.201.156.204";
+
 // ===== 전방 선언 =====
 static void init_openssl();
 int is_start;
@@ -159,7 +161,7 @@ static void *thread_init_tcp_sync(void* arguments)
 static void *thread_tlsa_query(void* arguments)
 {
     struct arg_struct2 * args = (struct arg_struct2 *) arguments;
-    tlsa_query_getdns("43.201.156.204", args->argv[1], args->tlsa_record_all, args->tlsa_len);
+    tlsa_query_getdns(DNS_RESOLVER, args->argv[1], args->tlsa_record_all, args->tlsa_len);
     pthread_exit(NULL);
 }
 
@@ -566,7 +568,7 @@ int main(int argc, char *argv[]){
         clock_gettime(CLOCK_MONOTONIC, &begin);
         printf("start DNS TXT query: %f\n",(begin.tv_sec) + (begin.tv_nsec) / 1000000000.0);
 
-        getdns_context *gctx = make_ctx_to_server("43.201.156.204");
+        getdns_context *gctx = make_ctx_to_server(DNS_RESOLVER);
         if (!gctx) error_handling("getdns ctx fail");
         // TXT 쿼리 (쿠키 재사용) — 프리부트는 create_socket_bio()에서 A로 이미 수행됨
 		
@@ -775,7 +777,7 @@ static BIO *create_socket_bio(char *argv[], struct DNS_info *dp, int * is_start,
     printf("start A and AAAA DNS records query : %f\n",(begin1.tv_sec) + (begin1.tv_nsec) / 1000000000.0);
 
     // getdns 컨텍스트 + A로 프리부트
-    getdns_context *gctx = make_ctx_to_server("43.201.156.204");
+    getdns_context *gctx = make_ctx_to_server(DNS_RESOLVER);
     if (!gctx) error_handling("getdns ctx fail");
     // ★ 기본 프리부트: A 레코드로 EDNS COOKIE 확보
     ensure_cookie_bootstrap(gctx, argv[1], GETDNS_RRTYPE_A);
