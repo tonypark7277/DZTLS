@@ -33,13 +33,9 @@ As mentioned in ZTLS, EDNS0 related bug existed in systemd until `v251-rc1`. We 
 
 ## 3. ZTLSlib installation
 
-aztlslib is specialized version of [ztlslib](https://github.com/swlim02/ztlslib) of swlim for page load time experiment.
-If page load time experiment for aztls is not required, just install [ztlslib](https://github.com/swlim02/ztlslib)
-
-ZTLSlib : https://github.com/swlim02/ztlslib
-
 ==**Make sure that you install ztlslib after kernel build and systemd update**==
 
+ZTLSlib is custom openssl library for 0-RTT data transmission without resumption.
 
 ``` bash
 git clone https://github.com/swlim02/ztlslib
