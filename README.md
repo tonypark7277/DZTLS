@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/1071344445.svg)](https://doi.org/10.5281/zenodo.17294189)
+
 ## 1. DZTLS kernel installation
 
 Install DZTLS custom kernel for generating and validating custom TFO cookie
