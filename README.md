@@ -64,7 +64,36 @@ For more detailed information about sementics, please refer to 'ZTLS: A DNS-base
 
 ### 4-2) DNS cookie setting
 
-[ghjeong] 이 부분만 채워주세요.
+BIND (over v9.11) supports DNS cookie. Make sure that version of BIND at DNS resolver supports DNS cookie.
+
+1. File modification
+
+Change `name.conf` or `named.conf.options` as following:
+``` 
+options {
+    ...
+    answer-cookie yes;          // Include the COOKIE EDNS option in the response
+    send-cookie yes;            // Include previously received cookies when sending queries (기본: yes)
+    cookie-algorithm siphash24; // Token Generation Algorithm
+    nocookie-udp-size 4096;     //  If no server cookie is present, do not send a response larger than this size.
+    require-server-cookie yes; // If the server wants to send the full response only when there is a valid server-cookie for a client that has cookies, yes or no
+    cookie-secret 3f2a8c9b1d4e5f60718293a4b5c6d7e8 // Random sequence
+};
+```
+
+2. Check and restart
+
+```bash
+named-checkconf /etc/named.conf # or /etc/named.conf.options
+rndc reload
+```
+
+3. Operation check
+
+```bash
+dig +cookie @<Resolver IP> example.com
+dig +nocookie @<Resolver IP> example.com
+```
 
 ## 5. DZTLS execution
 
@@ -105,7 +134,7 @@ For `echo_client_gendns.c`:
 ``` bash
 make all
 export LD_LIBRARY_PATH=/usr/local/lib
-./[TLS mode]_[TCP mode][_getdns]_client [domain name] [port]
+./[TLS mode]_[TCP mode]_getdns_client [domain name] [port]
 ```
 
 > [TLS mode] = ztls | tls
