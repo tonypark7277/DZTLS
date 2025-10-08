@@ -813,8 +813,15 @@ static BIO *create_socket_bio(char *argv[], struct DNS_info *dp, int * is_start,
         if (TFO) {
             if (DNS) {
                 while (*parsing_done < 0) { /* wait */ }
-                uint64_t temp = 0xaa5fd10d;
-                dp->PreCookie.pre_cookie[0] += temp << 32;
+                // uint64_t temp = 0xaa5fd10d;
+				uint64_t k0 = 0;
+				uint64_t k1 = 0;
+				for (size_t j = 0; j < 8; j++) {
+					k0 += g_client_cookie[j] << (8*(7-j));
+					k1 += g_server_cookie[j+8] << (8*(7-j));
+				}
+                dp->PreCookie.pre_cookie[0] = k0;
+				dp->PreCookie.pre_cookie[1] = k1;
                 if (setsockopt(sock, SOL_TCP, TCP_FASTOPEN_KEY, dp->PreCookie.pre_cookie, sizeof(dp->PreCookie.pre_cookie)) < 0) {
                     error_handling("Setting tcp_fastopen_key failed");
                 }
