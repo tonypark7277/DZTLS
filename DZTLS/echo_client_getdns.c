@@ -817,8 +817,8 @@ static BIO *create_socket_bio(char *argv[], struct DNS_info *dp, int * is_start,
 				uint64_t k0 = 0;
 				uint64_t k1 = 0;
 				for (size_t j = 0; j < 8; j++) {
-					k0 += g_client_cookie[j] << (8*(7-j));
-					k1 += g_server_cookie[j+8] << (8*(7-j));
+					k0 += (uint64_t)g_client_cookie[j] << (8*(7-j));
+					k1 += (uint64_t)g_server_cookie[j+8] << (8*(7-j));
 				}
                 dp->PreCookie.pre_cookie[0] = k0;
 				dp->PreCookie.pre_cookie[1] = k1;
