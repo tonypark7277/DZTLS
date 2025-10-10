@@ -816,10 +816,11 @@ static BIO *create_socket_bio(char *argv[], struct DNS_info *dp, int * is_start,
                 // uint64_t temp = 0xaa5fd10d;
 				uint64_t k0 = 0;
 				uint64_t k1 = 0;
-				for (size_t j = 0; j < 8; j++) {
+                
+				for (int j = 0; j < 8; j++) {
 					k0 += (uint64_t)g_client_cookie[j] << (8*(7-j));
 					k1 += (uint64_t)g_server_cookie[j+8] << (8*(7-j));
-				}
+                }
                 dp->PreCookie.pre_cookie[0] = k0;
 				dp->PreCookie.pre_cookie[1] = k1;
                 if (setsockopt(sock, SOL_TCP, TCP_FASTOPEN_KEY, dp->PreCookie.pre_cookie, sizeof(dp->PreCookie.pre_cookie)) < 0) {
@@ -1021,14 +1022,14 @@ static int load_dns_info2(struct DNS_info* dp, char* truncated_dnsmsg_out, char*
     printf("Client Certificate Request: %s\n", tmp);
 
     // AZTLS pre-cookie for tcp fastopen
-    strtok(NULL, " ");
-    tmp = strtok(NULL, " ");
-    strcat(truncated_dnsmsg_out, tmp);
-    for (int i = 0; i < 4; i++) {
-        strcpy(pre_cookie_tok, "0x");
-        strncat(pre_cookie_tok, tmp+16*i, 16);
-        dp->PreCookie.pre_cookie[i] = strtoul(pre_cookie_tok, NULL, 16);
-    }
+    // strtok(NULL, " ");
+    // tmp = strtok(NULL, " ");
+    // strcat(truncated_dnsmsg_out, tmp);
+    // for (int i = 0; i < 4; i++) {
+    //     strcpy(pre_cookie_tok, "0x");
+    //     strncat(pre_cookie_tok, tmp+16*i, 16);
+    //     dp->PreCookie.pre_cookie[i] = strtoul(pre_cookie_tok, NULL, 16);
+    // }
 
     // Signature algorithm
     strtok(NULL," ");
