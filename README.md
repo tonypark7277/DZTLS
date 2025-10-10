@@ -119,18 +119,13 @@ export LD_LIBRARY_PATH=/usr/local/lib
 ``` bash
 cd DZTLS
 
+sudo apt-get update
+sudo apt-get install -y libgetdns-dev pkg-config libidn2-0-dev libunbound-dev
+
 sudo sysctl net.ipv4.tcp_fastopen=3 # Turn on TCP Fast Open
 ```
 
-Before compoile, change IP address hardcoded in `create_socket_bio()` to your own IP address in little endian.
-Also for getdns version, change IP address of DNS resolver to your own IP address in string form.
-
-For `echo_client.c`:
-> Line 374 : uint64_t temp = 0xc4f6c92b; (43.201.246.196 -> 0x2b c9 f6 c4)
-
-For `echo_client_gendns.c`:
-> Line 814 : uint64_t temp = 0xc4f6c92b; (43.201.246.196 -> 0x2b c9 f6 c4)
->
+Before compoile, change IP address of DNS resolver to your own IP address in string form.
 > Line 075 : const static char *DNS_RESOLVER = "43.201.156.204";
 
 ``` bash
